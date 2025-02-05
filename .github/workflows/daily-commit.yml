@@ -16,12 +16,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
-      - name: Add a commit with email 23f3002264@ds.study.iitm.ac.in
+      - name: Set up Git configuration
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "23f3002264@ds.study.iitm.ac.in"
+
+      - name: Create a new file or update an existing one
+        run: |
           date > daily-commit.txt
+
+      - name: Add and commit changes
+        run: |
           git add daily-commit.txt
-          git commit -m "Daily automated commit by GitHub Actions"
+          git commit -m "Daily automated commit by GitHub Actions" || echo "No changes to commit"
+
+      - name: Push changes
+        run: |
           git push
